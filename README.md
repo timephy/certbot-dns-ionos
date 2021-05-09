@@ -19,8 +19,8 @@ First enable and create an API key under https://developer.hosting.ionos.de
 
 ```bash
 docker run -i --rm \
-  -v /opt/letsencrypt/cert:/etc/letsencrypt \
-  -v ~/certbot-dns-ionos:/tmp/scripts \
+  -v "/opt/letsencrypt/cert:/etc/letsencrypt" \
+  -v "~/certbot-dns-ionos:/tmp/scripts" \
   -e "API_KEY=<publicprefix>.<secret>" \
   certbot/certbot \
   certonly \
@@ -39,8 +39,8 @@ docker run -i --rm \
 
 ```bash
 docker run -i --rm \
-  -v /opt/letsencrypt/cert:/etc/letsencrypt \
-  -v ~/certbot-dns-ionos:/tmp/scripts \
+  -v "/opt/letsencrypt/cert:/etc/letsencrypt" \
+  -v "~/certbot-dns-ionos:/tmp/scripts" \
   -e "API_KEY=<publicprefix>.<secret>" \
   certbot/certbot \
   renew \
