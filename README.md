@@ -45,8 +45,9 @@ or for multiple certificates:
 ```bash
 MAIL=<your_mail>
 API_KEY=<publicprefix>.<secret>
+DOMAINS=(<your_domain1> <your_domain2> <your_domain3>)
 
-for DOMAIN in <your_domain1> <your_domain2> <your_domain3>
+for DOMAIN in ${DOMAINS[@]}
 do
   docker run -i --rm \
     -v "/opt/letsencrypt/cert:/etc/letsencrypt" \
