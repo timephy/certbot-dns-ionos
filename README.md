@@ -16,16 +16,25 @@ git clone https://github.com/timephy/certbot-dns-ionos
 
 First enable and create an API key under https://developer.hosting.ionos.de
 
-### certbot certonly
+### Setup variables
+
+Set these variables before running `certonly` or `renew` commands.
 
 ```bash
 MAIL=<your_mail>
 API_KEY=<publicprefix>.<secret>
+# for single certonly
 DOMAIN=<your_domain>
+# for multiple certonly
+DOMAINS=(<your_domain1> <your_domain2> <your_domain3>)
+```
 
+### certbot certonly
+
+```bash
 docker run -i --rm \
-  -v "/opt/letsencrypt/cert:/etc/letsencrypt" \
-  -v "~/certbot-dns-ionos:/tmp/scripts" \
+  -v /etc/letsencrypt:/etc/letsencrypt \
+  -v ~/certbot-dns-ionos:/tmp/scripts \
   -e "API_KEY=$API_KEY" \
   certbot/certbot \
   certonly \
@@ -43,15 +52,11 @@ docker run -i --rm \
 or for multiple certificates:
 
 ```bash
-MAIL=<your_mail>
-API_KEY=<publicprefix>.<secret>
-DOMAINS=(<your_domain1> <your_domain2> <your_domain3>)
-
 for DOMAIN in ${DOMAINS[@]}
 do
   docker run -i --rm \
-    -v "/opt/letsencrypt/cert:/etc/letsencrypt" \
-    -v "~/certbot-dns-ionos:/tmp/scripts" \
+    -v /etc/letsencrypt:/etc/letsencrypt \
+    -v ~/certbot-dns-ionos:/tmp/scripts \
     -e "API_KEY=$API_KEY" \
     certbot/certbot \
     certonly \
@@ -73,12 +78,9 @@ done
 No `-d $DOMAIN` to renew all domains. 
 
 ```bash
-MAIL=<your_mail>
-API_KEY=<publicprefix>.<secret>
-
 docker run -i --rm \
-  -v "/opt/letsencrypt/cert:/etc/letsencrypt" \
-  -v "~/certbot-dns-ionos:/tmp/scripts" \
+  -v /etc/letsencrypt:/etc/letsencrypt \
+  -v ~/certbot-dns-ionos:/tmp/scripts \
   -e "API_KEY=$API_KEY" \
   certbot/certbot \
   renew \
@@ -90,4 +92,17 @@ docker run -i --rm \
   --manual-auth-hook /tmp/scripts/authenticate.sh \
   --manual-cleanup-hook /tmp/scripts/cleanup.sh \
   -m $MAIL
+```
+
+
+### certbot certificates
+
+Lists your certificates.
+
+```bash
+docker run -i --rm \
+  -v /etc/letsencrypt:/etc/letsencrypt \
+  -v ~/certbot-dns-ionos:/tmp/scripts \
+  certbot/certbot \
+  certificates
 ```
